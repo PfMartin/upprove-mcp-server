@@ -44,7 +44,7 @@ func main() {
 	createPerformanceRecordTool := mcp.NewTool(
 		"create performance record",
 		mcp.WithDescription("Insert a new performance record into the database"),
-		mcp.WithString("category", mcp.Description("The category for the performance record that should be inserted into the database"), mcp.Required()),
+		mcp.WithString("performanceRecord", mcp.Description("The JSON for the performance record that should be inserted into the database"), mcp.Required()),
 	)
 	mcpServer.AddTool(createPerformanceRecordTool, tools.CreatePerformanceRecordToolHandler)
 
