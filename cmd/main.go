@@ -9,5 +9,7 @@ import (
 func main() {
 	logging.NewLogger()
 
+	
+
 	log.Info().Msg("Starting Upprove MCP Server")
 }
