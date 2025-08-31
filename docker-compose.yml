@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  upprove-db:
+    image: 'mongo:8'
+    container_name: 'upprove-db'
+    env_file:
+      - .env
+    volumes:
+      - /opt/upprove-db/db-data:/data/db
+    ports:
+      - '27017-27019:27017-27019'

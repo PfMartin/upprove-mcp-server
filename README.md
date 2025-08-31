@@ -6,10 +6,21 @@ MCP Server for the Upprove data. Upprove provides data for performance tracking 
 
 ### TL;DR
 
+#### Setup database
+
+1. Create file with the name `.env` with values similar to `.env.example`
+2. Execute setup commands
+
+```bash
+docker compose up -d
+make db-create-user
+make db-connect-user # For testing the setup
+```
+
 #### Run dev server
 
 ```bash
-make run-server-dev
+make run-dev
 ```
 
 #### Build server
@@ -21,7 +32,7 @@ make build
 #### Run compiled binary
 
 ```bash
-make run-server
+make run
 ```
 
 ### Layered folder structure
@@ -31,8 +42,7 @@ make run-server
 ```bash
 project
 ├── cmd                      # Command-related files
-│   └── app                  # Application entry point
-│       └── main.go          # Main application logic
+│   └── main.go              # Main application logic
 ├── internal                 # Internal codebase
 │   ├── handlers             # HTTP request handlers (controllers)
 │   │   └── user_handler.go  # User-specific handler

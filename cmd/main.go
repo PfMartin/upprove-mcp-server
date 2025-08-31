@@ -1,9 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"PfMartin/upprove-mcp-server/logging"
+
+	"github.com/rs/zerolog/log"
+)
 
 func main() {
-	fmt.Println("Hello Upprove MCP Server")
+	logging.NewLogger()
+
+	log.Info().Msg("Starting Upprove MCP Server")
 }
-
-
