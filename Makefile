@@ -32,3 +32,7 @@ db-create-user:
 
 db-connect-user:
 	docker exec -it upprove-db mongosh "mongodb://${UPPROVE_USER}:${UPPROVE_PWD}@localhost:27017/upprove?authSource=${UPPROVE_DB}"
+
+# Debugging
+inspector:
+	npm --prefix mcp-inspector run server:inspect

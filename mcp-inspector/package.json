@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@modelcontextprotocol/inspector": "^0.16.5"
+  },
+  "scripts": {
+    "server:inspect": "set DANGEROUSLY_OMIT_AUTH=true && npx @modelcontextprotocol/inspector /home/martin/Projects/upprove-mcp-server/dist/upprove-mcp-server"
+  }
+}
