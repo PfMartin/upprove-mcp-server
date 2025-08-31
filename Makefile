@@ -18,6 +18,9 @@ fmt-check:
 	gofmt -l .
 
 # Database
+db-start:
+	docker compose up -d
+
 db-connect-admin:
 	docker exec -it upprove-db mongosh admin -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD}
 

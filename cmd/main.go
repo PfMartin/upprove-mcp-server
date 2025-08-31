@@ -6,6 +6,7 @@ import (
 	"PfMartin/upprove-mcp-server/internal/models"
 	"PfMartin/upprove-mcp-server/logging"
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
@@ -27,7 +28,7 @@ func main() {
 
 	performanceRecordCreate := models.PerformanceRecordCreate{
 		Category:    "Sports",
-		Description: "Any Description",
+		Description: "Another description",
 		Value:       "1",
 		Unit:        "hours",
 	}
@@ -35,8 +36,6 @@ func main() {
 	insertedID, err := upproveStore.CreatePerformanceRecord(ctx, performanceRecordCreate)
 	if err != nil {
 		log.Err(err).Msg("failed to insert performance record`")
-		cancel()
-		return
 	}
 
 	fmt.Println(insertedID)
@@ -48,7 +47,13 @@ func main() {
 		return
 	}
 
-	fmt.Println(performanceRecords)
+	jsonRecords, err := json.Marshal(performanceRecords)
+	if err != nil {
+		log.Err(err).Msg("failed to marshal array of performance records to json")
+		return
+	}
+
+	fmt.Println(string(jsonRecords))
 
 	defer cancel()
 	log.Info().Msg("Starting Upprove MCP Server...")
