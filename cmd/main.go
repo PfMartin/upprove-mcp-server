@@ -38,7 +38,9 @@ func main() {
 		return
 	}
 
-	_ = db.NewMongoDbStore(conf.DBName, conf.DBUser, conf.DBPassword, conf.DBURI)
+	dbStore := db.NewMongoDbStore(conf.DBName, conf.DBUser, conf.DBPassword, conf.DBURI)
+
+	toolsHandler := tools.NewToolsHandler(dbStore)
 
 	mcpServer := server.NewMCPServer("upprove-mcp-server", "1.0.0")
 	createPerformanceRecordTool := mcp.NewTool(
@@ -46,7 +48,7 @@ func main() {
 		mcp.WithDescription("Insert a new performance record into the database"),
 		mcp.WithString("performanceRecord", mcp.Description("The JSON for the performance record that should be inserted into the database"), mcp.Required()),
 	)
-	mcpServer.AddTool(createPerformanceRecordTool, tools.CreatePerformanceRecordToolHandler)
+	mcpServer.AddTool(createPerformanceRecordTool, toolsHandler.CreatePerformanceRecordToolHandler)
 
 	// Run as stdio server
 	if err := server.ServeStdio(mcpServer); err != nil {

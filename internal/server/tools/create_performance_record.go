@@ -4,12 +4,12 @@ import (
 	"PfMartin/upprove-mcp-server/internal/models"
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"github.com/mark3labs/mcp-go/mcp"
-	"github.com/rs/zerolog/log"
 )
 
-func CreatePerformanceRecordToolHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+func (toolsHandler *ToolsHandler) CreatePerformanceRecordToolHandler(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	performanceRecordString, ok := request.Params.Arguments.(map[string]any)["performanceRecord"].(string)
 	if !ok || performanceRecordString == "" {
 		return mcp.NewToolResultError("Missing or invalid performanceRecord argument"), nil
@@ -22,9 +22,10 @@ func CreatePerformanceRecordToolHandler(ctx context.Context, request mcp.CallToo
 		return mcp.NewToolResultError("Invalid performanceRecord argument"), nil
 	}
 
-	recordBytes, _ := json.Marshal(performanceRecord)
+	insertedID, err := toolsHandler.DbStore.CreatePerformanceRecord(ctx, performanceRecord)
+	if err != nil {
+		return mcp.NewToolResultError(fmt.Sprintf("Failed to create new performance record: %s", err)), nil
+	}
 
-	log.Info().Msg(string(recordBytes))
-
-	return mcp.NewToolResultText("HELLO WORLD"), nil
+	return mcp.NewToolResultText(fmt.Sprintf("Created new performance record with id: %s", insertedID)), nil
 }
