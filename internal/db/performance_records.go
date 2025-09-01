@@ -15,7 +15,7 @@ func (store *MongoDbStore) GetAllPerformanceRecords(ctx context.Context) ([]mode
 
 	cursor, err := store.performanceRecordsCollection.Find(ctx, bson.M{})
 	if err != nil {
-		log.Err(err).Msg("failed to aggregate author documents")
+		log.Err(err).Msg("failed to find performance record documents")
 		return performanceRecords, err
 	}
 	defer cursor.Close(ctx)
@@ -29,13 +29,15 @@ func (store *MongoDbStore) GetAllPerformanceRecords(ctx context.Context) ([]mode
 }
 
 func (store *MongoDbStore) CreatePerformanceRecord(ctx context.Context, performanceRecord models.PerformanceRecordCreate) (string, error) {
+	timestamp := time.Now().UTC()
+
 	insertData := bson.M{
 		"category":    performanceRecord.Category,
 		"description": performanceRecord.Description,
 		"value":       performanceRecord.Value,
 		"unit":        performanceRecord.Unit,
-		"createdAt":   time.Now().Unix(),
-		"modifiedAt":  time.Now().Unix(),
+		"createdAt":   timestamp.String(),
+		"modifiedAt":  timestamp.String(),
 	}
 
 	insertResult, err := store.performanceRecordsCollection.InsertOne(ctx, insertData)
