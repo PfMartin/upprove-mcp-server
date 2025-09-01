@@ -33,3 +33,6 @@ go.work.sum
 
 # Compiled binary
 dist/
+
+# Tooling
+node_modules

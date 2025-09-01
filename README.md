@@ -4,9 +4,7 @@ MCP Server for the Upprove data. Upprove provides data for performance tracking 
 
 ## Developer Information
 
-### TL;DR
-
-#### Setup database
+### Setup database
 
 1. Create file with the name `.env` with values similar to `.env.example`
 2. Execute setup commands
@@ -17,25 +15,31 @@ make db-create-user
 make db-connect-user # For testing the setup
 ```
 
-#### Run dev server
+### Run dev server
 
 ```bash
 make run-dev
 ```
 
-#### Build server
+### Build server
 
 ```bash
 make build
 ```
 
-#### Run compiled binary
+### Run compiled binary
 
 ```bash
 make run
 ```
 
-### Layered folder structure
+### Run MCP inspector
+
+```bash
+make inspector
+```
+
+## Layered folder structure
 
 [Organize Like a pro](https://medium.com/@smart_byte_labs/organize-like-a-pro-a-simple-guide-to-go-project-folder-structures-e85e9c1769c2)
 

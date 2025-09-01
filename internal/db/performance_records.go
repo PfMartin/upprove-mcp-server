@@ -8,8 +8,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (store *MongoDbStore) GetAllPerformanceRecords(ctx context.Context) ([]models.PerformanceRecord, error) {
@@ -17,7 +15,7 @@ func (store *MongoDbStore) GetAllPerformanceRecords(ctx context.Context) ([]mode
 
 	cursor, err := store.performanceRecordsCollection.Find(ctx, bson.M{})
 	if err != nil {
-		log.Err(err).Msg("failed to aggregate author documents")
+		log.Err(err).Msg("failed to find performance record documents")
 		return performanceRecords, err
 	}
 	defer cursor.Close(ctx)
@@ -31,24 +29,15 @@ func (store *MongoDbStore) GetAllPerformanceRecords(ctx context.Context) ([]mode
 }
 
 func (store *MongoDbStore) CreatePerformanceRecord(ctx context.Context, performanceRecord models.PerformanceRecordCreate) (string, error) {
-	indexModel := mongo.IndexModel{
-		Keys:    bson.M{"description": 1},
-		Options: options.Index().SetUnique(true),
-	}
-
-	_, err := store.performanceRecordsCollection.Indexes().CreateOne(ctx, indexModel)
-	if err != nil {
-		log.Err(err).Msgf("performance record with description %s already exists", performanceRecord.Description)
-		return "", err
-	}
+	timestamp := time.Now().UTC()
 
 	insertData := bson.M{
 		"category":    performanceRecord.Category,
 		"description": performanceRecord.Description,
 		"value":       performanceRecord.Value,
 		"unit":        performanceRecord.Unit,
-		"createdAt":   time.Now().Unix(),
-		"modifiedAt":  time.Now().Unix(),
+		"createdAt":   timestamp.String(),
+		"modifiedAt":  timestamp.String(),
 	}
 
 	insertResult, err := store.performanceRecordsCollection.InsertOne(ctx, insertData)
