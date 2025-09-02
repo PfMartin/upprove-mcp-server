@@ -50,8 +50,13 @@ func (s *Server) InitResources() {
 }
 
 func (s *Server) ServeStdio() {
-	if err := server.ServeStdio(s.mcpServer); err != nil {
-		log.Err(err).Msgf("Server error: %v", err)
-		return
+	httpServer := server.NewStreamableHTTPServer(s.mcpServer)
+
+	if err := httpServer.Start(":8080"); err != nil {
+		log.Err(err).Msgf("Server failed to start: %v", err)
 	}
+	// if err := server.ServeStdio(s.mcpServer); err != nil {
+	// 	log.Err(err).Msgf("Server error: %v", err)
+	// 	return
+	// }
 }
